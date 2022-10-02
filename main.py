@@ -1,4 +1,4 @@
-
+import random
 
 # Opens game file, makes a list of all the lines the in text file, closes the file
 game_file = open("bridge1.txt", "r")
@@ -7,7 +7,7 @@ game_file.close()
 
 # Creates variables of the deck text file name (line 1) and number of cards in the deck (line 2)
 deck_file_name = game_file_content[0].strip()
-no_of_cards = game_file_content[1].strip()
+no_of_cards = int(game_file_content[1].strip())
 
 # Removes the first two elements of the game_file_content list (i.e. the deck file name and number of cards - the stuff we've already got)
 del game_file_content[0:2]
@@ -30,19 +30,49 @@ x=2
 for char in range(0, len(deck_file_content), x):
     list_of_card_codes.append(deck_file_content[char : char + x])
 
-print(list_of_card_codes)
 
-card_code = str(input("Enter Card Code ")).upper()
+random.shuffle(list_of_card_codes)
 
-card_code_li = []
-x = 1   #this splits the card code every 1 digit (e.g. "AS" goes to ['A', 'S']). This may need to be improved slightly for "robustness". Maybe see what the length of a dictionary key in and set x to that (that would of course assume that all keys have the same character length).
-for char in range(0, len(card_code), x):
-    card_code_li.append(card_code[char : char + x])
+#print(list_of_card_codes)
+
+no_of_players = int(input("How many players? "))
+#make sure an input lesser or equal to "0" is not accepted, or a value greater than the number for cards, and make sure strings and non-interger values make them ask again.
+
+players = {}
+for player in range(no_of_players):
+    name = "player"+str(player)
+    players[name] = []
 
 
-card_name = card_naming_sys[card_code_li[0]] + " of " + card_naming_sys[card_code_li[1]]
+x = -1
+for card in range((no_of_cards // no_of_players) * no_of_players):
+    x += 1
+    if x == no_of_players:
+        x = 0
+        players["player"+str(x)].append(list_of_card_codes[0].strip())
+        del list_of_card_codes[0]
+    else:
+        players["player"+str(x)].append(list_of_card_codes[0].strip())
+        del list_of_card_codes[0]
 
-print(card_name)
+print(players)
+
+
+
+
+
+
+# card_code = str(input("Enter Card Code ")).upper()
+
+# card_code_li = []
+# x = 1   #this splits the card code every 1 digit (e.g. "AS" goes to ['A', 'S']). This may need to be improved slightly for "robustness". Maybe see what the length of a dictionary key in and set x to that (that would of course assume that all keys have the same character length).
+# for char in range(0, len(card_code), x):
+#     card_code_li.append(card_code[char : char + x])
+
+
+# card_name = card_naming_sys[card_code_li[0]] + " of " + card_naming_sys[card_code_li[1]]
+
+# print(card_name)
 
 
 
