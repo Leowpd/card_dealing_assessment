@@ -2,6 +2,22 @@ import random
 import pygame
 import os
 
+
+GAMES_LIST = ['bridge', 'snap', 'hearts'] #robustttttt
+
+WELCOME_TEXT1 = "Hello and welcome to this card dealing program,"
+WELCOME_TEXT2 = "please enter the required inputs here first,"
+WELCOME_TEXT3 = "and then open up the created game window."
+GAME_INPUT_TEXT = "Which game would you like? "
+AVAILABLE_GAMES_TEXT = ""
+PLAYERS_INPUT_TEXT = "How many players? "
+CARDSPERPLAYER_INPUT_TEXT = "How many cards per player? "
+WILDCARD_INPUT_TEXT = "Would you like to add any extra wild cards? (y/n) "
+WILDCARD_QUESTION1_INPUT_TEXT = "How many wild cards? "
+WILDCARD_QUESTION2_INPUT_TEXT = "What is the value of the wild cards? "
+THANKYOU_TEXT = "Thank you, please now open the new window"
+
+
 WIDTH, HEIGHT = 1100, 625
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Card Dealing")
@@ -46,6 +62,58 @@ def draw_window():
 
 
 def main():
+    print(WELCOME_TEXT1)
+    print(WELCOME_TEXT2)
+    print(WELCOME_TEXT3)
+    while True:
+        user_game = input(GAME_INPUT_TEXT+AVAILABLE_GAMES_TEXT)
+        if user_game.lower() in GAMES_LIST:
+            break
+        else:
+            print("Sorry that is not a loaded game, please try again")
+    while True:
+        try:
+            user_players = int(input(PLAYERS_INPUT_TEXT))
+            if user_players >= 1 and user_players <= 52:
+                break
+            else:
+                print("Please input a value between 1 and the 52")
+        except ValueError:
+            print("Please input a value between 1 and the 52")
+    while True:
+        try:
+            user_cardsperplayer = int(input(CARDSPERPLAYER_INPUT_TEXT))
+            if user_cardsperplayer >= 1 and user_cardsperplayer <= 52:
+                break
+            else:
+                print("Please input a value between 1 and the 52")
+        except ValueError:
+            print("Please input a value between 1 and the 52")
+    while True:
+        user_wildcards = input(WILDCARD_INPUT_TEXT)
+        if user_wildcards.lower() == "y" or user_wildcards.lower() == "yes":
+            break
+        elif user_wildcards.lower() == "n" or user_wildcards.lower() == "no":
+            break
+        else:
+            print("Please input y or n")
+    if user_wildcards == "y" or user_wildcards == "yes":
+        while True:
+            try:
+                user_wildcards_number = int(input(WILDCARD_QUESTION1_INPUT_TEXT))
+                if user_wildcards_number >= 1 and user_wildcards_number <= 52:
+                    break
+                else:
+                    print("Please input a value between 1 and the 52")
+            except ValueError:
+                print("Please input a value between 1 and the 52")
+        user_wildcards_value = input(WILDCARD_QUESTION2_INPUT_TEXT)
+    print(THANKYOU_TEXT)
+
+
+
+
+
     clock = pygame.time.Clock()
     run = True
     while run:
