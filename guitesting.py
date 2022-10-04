@@ -3,34 +3,6 @@ import pygame
 import os
 import constants as cnst
 
-LOADED_IMAGES = {
-    "Ace of Spades"
-    "King of Spades"
-    "Queen of Spades"
-    "Jack of Spades"
-    "Ten of Spades"
-    "Nine of Spades"
-    "Eight of Spades"
-    "Seven of Spades"
-    "Six of Spades"
-    "Five of Spades"
-    "Four of Spades"
-    "Three of Spades"
-    "Two of Spades"
-    "Ace of Hearts"
-    "King of Hearts"
-    "Queen of Hearts"
-    "Jack of Hearts"
-    "Ten of Hearts"
-    "Nine of Hearts"
-    "Eight of Hearts"
-    "Seven of Hearts"
-    "Six of Hearts"
-    "Five of Hearts"
-    "Four of Hearts"
-    "Three of Hearts"
-    "Two of Hearts"
-}
 
 GAMES_LIST = ['bridge', 'snap', 'hearts'] #robustttttt
 
@@ -58,7 +30,7 @@ pygame.display.set_caption("Card Dealing")
 pygame.font.init()
 FONT = pygame.font.Font(None, 32)
 
-SELECT_GAME_TEXT = FONT.render("Select Game", False, (0, 0, 0))
+TOO_MANY_CARDS_TEXT = FONT.render("Oops", False, (0, 0, 0))
 
 WHITE = (255, 255, 255)
 
@@ -110,9 +82,11 @@ def process_inputs(list_of_card_codes, user_players, user_cardsperplayer):
     random.shuffle(list_of_card_codes)
 
     players = {}
+    player_names = []
     for player in range(user_players):
         name = "player"+str(player)
         players[name] = []
+        player_names.append(name)
     
     x = -1
     for card in range(user_cardsperplayer * user_players):
@@ -122,9 +96,8 @@ def process_inputs(list_of_card_codes, user_players, user_cardsperplayer):
         players["player"+str(x)].append(list_of_card_codes[0].strip())
         del list_of_card_codes[0]
 
-    players["left_overs"] = list_of_card_codes.copy()
 
-    return players
+    return players, player_names
     
 
 
@@ -185,7 +158,8 @@ def accept_inputs():
             print("Please input a value between 1 and "+str(no_of_cards))
     print(THANKYOU_TEXT)
 
-    players = process_inputs(list_of_card_codes, user_players, user_cardsperplayer)  
+    players, player_names = process_inputs(list_of_card_codes, user_players, user_cardsperplayer)
+    return players, player_names
 
 
 
@@ -198,28 +172,50 @@ def deal_card(temp_list):
     return card, temp_list
 
 
-def draw_window():
+def draw_window(players, player_names):
     WINDOW.fill(WHITE)
-    WINDOW.blit(SELECT_GAME_TEXT, (860, 40))
     #WINDOW.blit(TEST_IMAGE2, (300, 100))
     x = -20
-    y = 20
-    temp_list = list_of_card_codes.copy() #update this obviously
-    for key in range(52): #this too is something that needs to improve
-        x += 60
-        if x >= 820:
-            x = 40
-            y += 80
-        card, temp_list = deal_card(temp_list)
-        #image0 = pygame.image.load(os.path.join('assets', card))
-        WINDOW.blit(pygame.transform.scale(pygame.image.load(os.path.join('assets', str(card))), (CARD_WIDTH, CARD_HEIGHT)), (x, y))
-        #WINDOW.blit(thingg, (x, 200))
+    y = -100
+    temp_player_names = player_names.copy()
+    for player in player_names:
+        x = -20
+        y += 120
+        temp_list = players[temp_player_names[0]].copy()
+        del temp_player_names[0]
+        for i in range(len(temp_list)):
+            x += 60
+            if x >= 820:
+                x = 40
+                y += 80
+            if y > 550:
+                WINDOW.blit(TOO_MANY_CARDS_TEXT, (860, 550))
+                break
+            card, temp_list = deal_card(temp_list)
+            WINDOW.blit(pygame.transform.scale(pygame.image.load(os.path.join('assets', str(card))), (CARD_WIDTH, CARD_HEIGHT)), (x, y))
+
+
+
+    # temp_list = list_of_card_codes.copy() #update this obviously
+    # for key in range(52): #this too is something that needs to improve
+    #     x += 60
+    #     if x >= 820:
+    #         x = 40
+    #         y += 80
+    #     card, temp_list = deal_card(temp_list)
+    #     #image0 = pygame.image.load(os.path.join('assets', card))
+    #     WINDOW.blit(pygame.transform.scale(pygame.image.load(os.path.join('assets', str(card))), (CARD_WIDTH, CARD_HEIGHT)), (x, y))
+    #     #WINDOW.blit(thingg, (x, 200))
+
+
     pygame.display.update()
 
 
 def main():
 
-    accept_inputs()
+    players, player_names = accept_inputs()
+
+    print(players)
 
     clock = pygame.time.Clock()
     run = True
@@ -230,9 +226,12 @@ def main():
                 run = False
 
 
-        draw_window()
+        draw_window(players, player_names)
     
     pygame.quit()
+
+
+
 
 if __name__ == "__main__":
     main()
