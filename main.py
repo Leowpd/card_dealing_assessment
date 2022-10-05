@@ -24,6 +24,7 @@ CARDS_ERROR_MAORI = pygame.transform.scale(IMAGE4, \
     (cnst.CARDS_ERROR_WIDTH, cnst.CARDS_ERROR_HEIGHT))
 
 
+#processes the game file
 def process_game_file(user_game):
     game_file = open(cnst.LOADED_GAMES[user_game], "r")
     game_file_content = game_file.readlines()
@@ -60,6 +61,7 @@ def process_game_file(user_game):
     return no_of_cards, card_naming_sys, list_of_card_codes
 
 
+#processes player inputs
 def process_inputs(list_of_card_codes, user_players, user_cardsperplayer):
     random.shuffle(list_of_card_codes)
     players = {}
@@ -80,9 +82,9 @@ def process_inputs(list_of_card_codes, user_players, user_cardsperplayer):
     return players, player_names
 
 
+#accepts and verifies player inputs
 def accept_inputs():
     print(cnst.TEXTS["WELCOME_TEXT"])
-
     while True:
         user_language = input(cnst.TEXTS["LANGUAGE_INPUT_TEXT"]).lower()
         if user_language == "1" or user_language == "one" \
@@ -169,12 +171,14 @@ def accept_inputs():
     return players, player_names, user_language, user_wildcards_value
 
 
+#deals a card to draw on the window
 def deal_card(temp_list):
     card = cnst.LOADED_IMAGES[str(temp_list[0])]
     del temp_list[0]
     return card, temp_list
 
 
+#deals with the GUI
 def draw_window(players, player_names, user_language, user_wildcards_value):
     WINDOW.fill(cnst.WINDOW_COLOUR)
     if user_language == "MAORI":
@@ -218,6 +222,7 @@ def draw_window(players, player_names, user_language, user_wildcards_value):
     pygame.display.update()
 
 
+#main function
 def main():
     players, player_names, user_language, \
         user_wildcards_value = accept_inputs()
