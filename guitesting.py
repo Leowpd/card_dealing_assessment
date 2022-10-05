@@ -48,13 +48,9 @@ pygame.display.set_caption("Card Dealing")
 pygame.font.init()
 FONT = pygame.font.Font(None, 32)
 
-ENGLISH_TOO_MANY_CARDS_TEXT = FONT.render("Some cards are unable to fit on the screen", False, (0, 0, 0))
-MAORI_TOO_MANY_CARDS_TEXT = FONT.render("Kei te ngaro etahi kaari i te mata", False, (0, 0, 0))
-
-
 WHITE = (255, 255, 255)
 
-FPS = 10
+FPS = 1
 
 CARD_WIDTH = 54
 CARD_HEIGHT = 75
@@ -160,8 +156,8 @@ def accept_inputs():
     
     no_of_cards, card_naming_sys, list_of_card_codes = process_game_file(user_game)
 
-    user_wildcards_number = "x" #this is so I can have something to pass to the process_input() function
-    user_wildcards_value = "x" #this is so I can have something to pass to the process_input() function
+    user_wildcards_number = "#%" #this is so I can have something to pass to the process_input() function
+    user_wildcards_value = "#%" #this is so I can have something to pass to the process_input() function
     while True:
         user_wildcards = input(cnst.TEXTS[str(user_language)+"_WILDCARD_INPUT_TEXT"])
         if user_wildcards.lower() == "y" or user_wildcards.lower() == "yes":
@@ -205,7 +201,7 @@ def accept_inputs():
     print(cnst.TEXTS[str(user_language)+"_THANKYOU_TEXT"])
 
     players, player_names = process_inputs(list_of_card_codes, user_players, user_cardsperplayer)
-    return players, player_names, user_language
+    return players, player_names, user_language, user_wildcards_value
 
 
 
@@ -218,12 +214,18 @@ def deal_card(temp_list):
     return card, temp_list
 
 
-def draw_window(players, player_names, user_language):
+def draw_window(players, player_names, user_language, user_wildcards_value):
     WINDOW.fill(WHITE)
     if user_language == "MAORI":
         WINDOW.blit(INSTRUCTIONS_MAORI, (870, 40))
+        if user_wildcards_value != "#%":
+            WINDOW.blit(FONT.render("Kaari mohoao: ", False, (0, 0, 0)), (870, 540))
+            WINDOW.blit(FONT.render('"'+str(user_wildcards_value)+'"', False, (0, 0, 0)), (880, 565))   
     else:
         WINDOW.blit(INSTRUCTIONS_ENGLISH, (870, 40))
+        if user_wildcards_value != "#%":
+            WINDOW.blit(FONT.render("Wildcards: ", False, (0, 0, 0)), (870, 540))
+            WINDOW.blit(FONT.render('"'+str(user_wildcards_value)+'"', False, (0, 0, 0)), (880, 565)) 
     #WINDOW.blit(TEST_IMAGE2, (300, 100))
     x = -20
     y = -100
@@ -266,7 +268,7 @@ def draw_window(players, player_names, user_language):
 
 def main():
 
-    players, player_names, user_language = accept_inputs()
+    players, player_names, user_language, user_wildcards_value = accept_inputs()
 
     print(players)
 
@@ -279,7 +281,7 @@ def main():
                 run = False
 
 
-        draw_window(players, player_names, user_language)
+        draw_window(players, player_names, user_language, user_wildcards_value)
     
     pygame.quit()
 
@@ -288,7 +290,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 
