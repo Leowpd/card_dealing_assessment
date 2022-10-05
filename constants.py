@@ -1,5 +1,24 @@
+#Constants
+
+GAMES = "(bridge, hearts) "
+GAMES_LIST = ['bridge', 'hearts']
+LOADED_GAMES = {
+    "bridge": "bridge1.txt",
+    "hearts": "hearts3.txt"
+}
+
+
+FPS = 1
+WINDOW_COLOUR = (255, 255, 255)
+WINDOW_WIDTH, WINDOW_HEIGHT = 1100, 625
+CARD_WIDTH, CARD_HEIGHT = 54, 75
+INSTRUCTIONS_WIDTH, INSTRUCTIONS_HEIGHT = 180, 380
+CARDS_ERROR_WIDTH, CARDS_ERROR_HEIGHT = 180, 68
+
 
 TEXTS = {
+    "WELCOME_TEXT": "Hello and welcome to this card dealing program,\nplease enter the required inputs here first,\nand then open up the created game window.",
+    "LANGUAGE_INPUT_TEXT": "English (1) or Te Reo Māori (2) ",
     "ENGLISH_GAME_INPUT_TEXT": "Which game would you like? ",
     "ENGLISH_PLAYERS_INPUT_TEXT": "How many players? ",
     "ENGLISH_CARDSPERPLAYER_INPUT_TEXT": "How many cards per player? ",
