@@ -30,9 +30,7 @@ TEXTS = {
     "ENGLISH_WILDCARDS_ERROR_TEXT" : "Please enter y or n",
     "ENGLISH_NUMBER_INPUT_ERROR": "Please input a value between 1 and ",
 
-
     "ENGLISH_THANKYOU_TEXT": "Thank you, please now open the new window",
-
 
     "MAORI_GAME_INPUT_TEXT": "Ko tehea keemu ka pirangi koe? ",
     "MAORI_PLAYERS_INPUT_TEXT": "Tokohia nga kaitakaro? ",
@@ -47,11 +45,6 @@ TEXTS = {
 
     "MAORI_THANKYOU_TEXT": "Tena koe, whakatuwheratia te matapihi hou inaianei"
 }
-
-
-
-
-
 
 
 LOADED_IMAGES = {
