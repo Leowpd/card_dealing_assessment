@@ -1,3 +1,40 @@
+
+TEXTS = {
+    "ENGLISH_GAME_INPUT_TEXT": "Which game would you like? ",
+    "ENGLISH_PLAYERS_INPUT_TEXT": "How many players? ",
+    "ENGLISH_CARDSPERPLAYER_INPUT_TEXT": "How many cards per player? ",
+    "ENGLISH_WILDCARD_INPUT_TEXT": "Would you like to add any extra wild cards? (y/n) ",
+    "ENGLISH_WILDCARD_QUESTION1_INPUT_TEXT": "How many wild cards? ",
+    "ENGLISH_WILDCARD_QUESTION2_INPUT_TEXT": "What is the value of the wild cards? ",
+
+    "ENGLISH_GAME_ERROR_TEXT": "Sorry that is not a loaded game, please try again",
+    "ENGLISH_WILDCARDS_ERROR_TEXT" : "Please enter y or n",
+    "ENGLISH_NUMBER_INPUT_ERROR": "Please input a value between 1 and ",
+
+
+    "ENGLISH_THANKYOU_TEXT": "Thank you, please now open the new window",
+
+
+    "MAORI_GAME_INPUT_TEXT": "Ko tehea keemu ka pirangi koe? ",
+    "MAORI_PLAYERS_INPUT_TEXT": "Tokohia nga kaitakaro? ",
+    "MAORI_CARDSPERPLAYER_INPUT_TEXT": "E hia nga kaari mo ia kaitakaro? ",
+    "MAORI_WILDCARD_INPUT_TEXT": "Kei te pirangi koe ki te taapiri i etahi atu kaari mohoao? (y/n) ",
+    "MAORI_WILDCARD_QUESTION1_INPUT_TEXT": "E hia nga kaari mohoao? ",
+    "MAORI_WILDCARD_QUESTION2_INPUT_TEXT": "He aha te uara o nga kaari mohoao? ",
+
+    "MAORI_GAME_ERROR_TEXT": "Aroha mai ehara tera i te keemu kua utaina, ngana ano",
+    "MAORI_WILDCARDS_ERROR_TEXT": "Tuhia koa y or n",
+    "MAORI_NUMBER_INPUT_ERROR": "Whakauruhia koa he uara i waenga i te 1 me te ",
+
+    "MAORI_THANKYOU_TEXT": "Tena koe, whakatuwheratia te matapihi hou inaianei"
+}
+
+
+
+
+
+
+
 LOADED_IMAGES = {
     "Ace of Spades": "AS.png",
     "King of Spades": "KS.png",

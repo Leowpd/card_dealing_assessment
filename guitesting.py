@@ -4,7 +4,7 @@ import os
 import constants as cnst
 
 
-GAMES_LIST = ['bridge', 'snap', 'hearts'] #robustttttt
+GAMES_LIST = ['bridge', 'hearts'] #robustttttt
 
 LOADED_GAMES = {
     "bridge": "bridge1.txt",
@@ -14,14 +14,32 @@ LOADED_GAMES = {
 WELCOME_TEXT1 = "Hello and welcome to this card dealing program,"
 WELCOME_TEXT2 = "please enter the required inputs here first,"
 WELCOME_TEXT3 = "and then open up the created game window."
-GAME_INPUT_TEXT = "Which game would you like? "
-AVAILABLE_GAMES_TEXT = ""
-PLAYERS_INPUT_TEXT = "How many players? "
-CARDSPERPLAYER_INPUT_TEXT = "How many cards per player? "
-WILDCARD_INPUT_TEXT = "Would you like to add any extra wild cards? (y/n) "
-WILDCARD_QUESTION1_INPUT_TEXT = "How many wild cards? "
-WILDCARD_QUESTION2_INPUT_TEXT = "What is the value of the wild cards? "
-THANKYOU_TEXT = "Thank you, please now open the new window"
+
+LANGUAGE_INPUT_TEXT = "English (1) or Te Reo Māori (2) "
+
+
+# ENGLISH_GAME_INPUT_TEXT = "Which game would you like? "
+# ENGLISH_AVAILABLE_GAMES_TEXT = ""
+# ENGLISH_PLAYERS_INPUT_TEXT = "How many players? "
+# ENGLISH_CARDSPERPLAYER_INPUT_TEXT = "How many cards per player? "
+# ENGLISH_WILDCARD_INPUT_TEXT = "Would you like to add any extra wild cards? (y/n) "
+# ENGLISH_WILDCARD_QUESTION1_INPUT_TEXT = "How many wild cards? "
+# ENGLISH_WILDCARD_QUESTION2_INPUT_TEXT = "What is the value of the wild cards? "
+
+# ENGLISH_THANKYOU_TEXT = "Thank you, please now open the new window"
+
+
+# MAORI_GAME_INPUT_TEXT = "Ko tehea keemu ka pirangi koe? "
+# MAORI_PLAYERS_INPUT_TEXT = "Tokohia nga kaitakaro? "
+# MAORI_CARDSPERPLAYER_INPUT_TEXT = "E hia nga kaari mo ia kaitakaro? "
+# MAORI_WILDCARD_INPUT_TEXT = "Kei te pirangi koe ki te taapiri i etahi atu kaari mohoao? (y/n) "
+# MAORI_WILDCARD_QUESTION1_INPUT_TEXT = "E hia nga kaari mohoao? "
+# MAORI_WILDCARD_QUESTION2_INPUT_TEXT = "He aha te uara o nga kaari mohoao? "
+
+# MAORI_THANKYOU_TEXT = "Tena koe, whakatuwheratia te matapihi hou inaianei"
+
+
+
 
 WIDTH, HEIGHT = 1100, 625
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -30,7 +48,9 @@ pygame.display.set_caption("Card Dealing")
 pygame.font.init()
 FONT = pygame.font.Font(None, 32)
 
-TOO_MANY_CARDS_TEXT = FONT.render("Oops", False, (0, 0, 0))
+ENGLISH_TOO_MANY_CARDS_TEXT = FONT.render("Some cards are unable to fit on the screen", False, (0, 0, 0))
+MAORI_TOO_MANY_CARDS_TEXT = FONT.render("Kei te ngaro etahi kaari i te mata", False, (0, 0, 0))
+
 
 WHITE = (255, 255, 255)
 
@@ -39,8 +59,24 @@ FPS = 10
 CARD_WIDTH = 54
 CARD_HEIGHT = 75
 
+INSTRUCTIONS_WIDTH = 180
+INSTRUCTIONS_HEIGHT = 380
+
+CARDS_ERROR_WIDTH = 180
+CARDS_ERROR_HEIGHT = 68
+
 CARD = pygame.image.load(os.path.join('assets', '2C.png'))
 TEST_IMAGE = pygame.transform.scale(CARD, (CARD_WIDTH, CARD_HEIGHT))
+
+IMAGE1 = pygame.image.load(os.path.join('assets', 'instructions_english.png'))
+IMAGE2 = pygame.image.load(os.path.join('assets', 'instructions_maori.png'))
+IMAGE3 = pygame.image.load(os.path.join('assets', 'cards_error_english.png'))
+IMAGE4 = pygame.image.load(os.path.join('assets', 'cards_error_maori.png'))
+
+INSTRUCTIONS_ENGLISH = pygame.transform.scale(IMAGE1, (INSTRUCTIONS_WIDTH, INSTRUCTIONS_HEIGHT))
+INSTRUCTIONS_MAORI = pygame.transform.scale(IMAGE2, (INSTRUCTIONS_WIDTH, INSTRUCTIONS_HEIGHT))
+CARDS_ERROR_ENGLISH = pygame.transform.scale(IMAGE3, (CARDS_ERROR_WIDTH, CARDS_ERROR_HEIGHT))
+CARDS_ERROR_MAORI = pygame.transform.scale(IMAGE4, (CARDS_ERROR_WIDTH, CARDS_ERROR_HEIGHT))
 
 list_of_card_codes = ['AS', 'KS', 'QS', 'JS', 'TS', '9S', '8S', '7S', '6S', '5S', '4S', '3S', '2S', 'AH', 'KH', 'QH', 'JH', 'TH', '9H', '8H', '7H', '6H', '5H', '4H', '3H', '2H', 'AD', 'KD', 'QD', 'JD', 'TD', '9D', '8D', '7D', '6D', '5D', '4D', '3D', '2D', 'AC', 'KC', 'QC', 'JC', 'TC', '9C', '8C', '7C', '6C', '5C', '4C', '3C', '2C']
 
@@ -105,61 +141,71 @@ def accept_inputs():
     print(WELCOME_TEXT1)
     print(WELCOME_TEXT2)
     print(WELCOME_TEXT3)
+
     while True:
-        user_game = input(GAME_INPUT_TEXT+AVAILABLE_GAMES_TEXT)
+        user_language = input(LANGUAGE_INPUT_TEXT).lower()
+        if user_language == "1" or user_language == "one" or user_language == "english":
+            user_language = "ENGLISH"
+            break
+        elif user_language == "2" or user_language == "two" or user_language == "te reo maori" or user_language == "te reo māori" or user_language == "te reo" or user_language == "māori" or user_language == "maori":
+            user_language = "MAORI"
+            break
+
+    while True:
+        user_game = input(cnst.TEXTS[str(user_language)+"_GAME_INPUT_TEXT"])
         if user_game.lower() in GAMES_LIST:
             break
         else:
-            print("Sorry that is not a loaded game, please try again")
+            print(cnst.TEXTS[str(user_language)+"_GAME_ERROR_TEXT"])
     
     no_of_cards, card_naming_sys, list_of_card_codes = process_game_file(user_game)
 
     user_wildcards_number = "x" #this is so I can have something to pass to the process_input() function
     user_wildcards_value = "x" #this is so I can have something to pass to the process_input() function
     while True:
-        user_wildcards = input(WILDCARD_INPUT_TEXT)
+        user_wildcards = input(cnst.TEXTS[str(user_language)+"_WILDCARD_INPUT_TEXT"])
         if user_wildcards.lower() == "y" or user_wildcards.lower() == "yes":
             break
         elif user_wildcards.lower() == "n" or user_wildcards.lower() == "no":
             break
         else:
-            print("Please input y or n")
+            print(cnst.TEXTS[str(user_language)+"_WILDCARDS_ERROR_TEXT"])
     if user_wildcards == "y" or user_wildcards == "yes":
         while True:
             try:
-                user_wildcards_number = int(input(WILDCARD_QUESTION1_INPUT_TEXT))
+                user_wildcards_number = int(input(cnst.TEXTS[str(user_language)+"_WILDCARD_QUESTION1_INPUT_TEXT"]))
                 if user_wildcards_number >= 1 and user_wildcards_number <= 10:
                     break
                 else:
-                    print("Please input a value between 1 and 10")
+                    print(cnst.TEXTS[str(user_language)+"_NUMBER_INPUT_ERROR"]+"10")
             except ValueError:
-                print("Please input a value between 1 and 10")
-        user_wildcards_value = input(WILDCARD_QUESTION2_INPUT_TEXT)
+                print(cnst.TEXTS[str(user_language)+"_NUMBER_INPUT_ERROR"]+"10")
+        user_wildcards_value = input(cnst.TEXTS[str(user_language)+"_WILDCARD_QUESTION2_INPUT_TEXT"])
         for x in range(user_wildcards_number):
             list_of_card_codes.append("x"+str(x))
             no_of_cards += 1
     while True:
         try:
-            user_players = int(input(PLAYERS_INPUT_TEXT))
+            user_players = int(input(cnst.TEXTS[str(user_language)+"_PLAYERS_INPUT_TEXT"]))
             if user_players >= 1 and user_players <= no_of_cards:
                 break
             else:
-                print("Please input a value between 1 and "+str(no_of_cards))
+                print(cnst.TEXTS[str(user_language)+"_NUMBER_INPUT_ERROR"]+str(no_of_cards))
         except ValueError:
-            print("Please input a value between 1 and "+str(no_of_cards))
+            print(cnst.TEXTS[str(user_language)+"_NUMBER_INPUT_ERROR"]+str(no_of_cards))
     while True:
         try:
-            user_cardsperplayer = int(input(CARDSPERPLAYER_INPUT_TEXT))
+            user_cardsperplayer = int(input(cnst.TEXTS[str(user_language)+"_CARDSPERPLAYER_INPUT_TEXT"]))
             if user_cardsperplayer >= 1 and user_cardsperplayer <= (no_of_cards // user_players):
                 break
             else:
-                print("Please input a value between 1 and "+str(no_of_cards // user_players))
+                print(cnst.TEXTS[str(user_language)+"_NUMBER_INPUT_ERROR"]+str(no_of_cards // user_players))
         except ValueError:
-            print("Please input a value between 1 and "+str(no_of_cards))
-    print(THANKYOU_TEXT)
+            print(cnst.TEXTS[str(user_language)+"_NUMBER_INPUT_ERROR"]+str(no_of_cards))
+    print(cnst.TEXTS[str(user_language)+"_THANKYOU_TEXT"])
 
     players, player_names = process_inputs(list_of_card_codes, user_players, user_cardsperplayer)
-    return players, player_names
+    return players, player_names, user_language
 
 
 
@@ -172,8 +218,12 @@ def deal_card(temp_list):
     return card, temp_list
 
 
-def draw_window(players, player_names):
+def draw_window(players, player_names, user_language):
     WINDOW.fill(WHITE)
+    if user_language == "MAORI":
+        WINDOW.blit(INSTRUCTIONS_MAORI, (870, 40))
+    else:
+        WINDOW.blit(INSTRUCTIONS_ENGLISH, (870, 40))
     #WINDOW.blit(TEST_IMAGE2, (300, 100))
     x = -20
     y = -100
@@ -189,7 +239,10 @@ def draw_window(players, player_names):
                 x = 40
                 y += 80
             if y > 550:
-                WINDOW.blit(TOO_MANY_CARDS_TEXT, (860, 550))
+                if user_language == "MAORI":
+                    WINDOW.blit(CARDS_ERROR_MAORI, (870, 450))
+                else:
+                    WINDOW.blit(CARDS_ERROR_ENGLISH, (870, 450))
                 break
             card, temp_list = deal_card(temp_list)
             WINDOW.blit(pygame.transform.scale(pygame.image.load(os.path.join('assets', str(card))), (CARD_WIDTH, CARD_HEIGHT)), (x, y))
@@ -213,7 +266,7 @@ def draw_window(players, player_names):
 
 def main():
 
-    players, player_names = accept_inputs()
+    players, player_names, user_language = accept_inputs()
 
     print(players)
 
@@ -226,7 +279,7 @@ def main():
                 run = False
 
 
-        draw_window(players, player_names)
+        draw_window(players, player_names, user_language)
     
     pygame.quit()
 
@@ -235,11 +288,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
 
 
 
